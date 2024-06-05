@@ -1,0 +1,27 @@
+.inputContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .inputField {
+    width: 100%;
+    padding: 1rem; 
+  }
+  
+  .submitButton {
+    position: absolute;
+    right: 10px; 
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .submitButton svg {
+    width: 20px;
+    height: 20px;
+  }
+  

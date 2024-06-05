@@ -1,0 +1,1700 @@
+{
+    "version": "1.10",
+    "settings": {
+        "defaultLanguage": "en",
+        "languages": [
+            "en"
+        ],
+        "description": "",
+        "id": "82374922-21fc-45f0-9909-8fd1614f5e0f",
+        "inactivityTimeout": 30,
+        "botVariables": [
+            {
+                "id": "var-fed69ae884",
+                "type": "string",
+                "name": "openAIToken",
+                "description": "",
+                "scope": "bot",
+                "defaultValue": ""
+            },
+            {
+                "id": "var-fb51cf74a4",
+                "type": "string",
+                "name": "assistantId",
+                "description": "",
+                "scope": "bot",
+                "defaultValue": ""
+            }
+        ],
+        "userVariables": [],
+        "nodeRepetitionLimit": 3,
+        "configVariables": {
+            "RESET_SECRET": ""
+        },
+        "cognitiveConfigs": {
+            "openAi": {}
+        }
+    },
+    "flows": [
+        {
+            "id": "wf-error",
+            "name": "Error",
+            "startNode": "nd-98dc0bcc87",
+            "variables": [],
+            "links": [
+                {
+                    "id": "edg-1cb5862648",
+                    "source": "nd-98dc0bcc87",
+                    "sourcePort": "trs-02c7129430",
+                    "target": "nd-58fca56e01"
+                },
+                {
+                    "id": "edg-1c28c96d6a",
+                    "source": "nd-58fca56e01",
+                    "sourcePort": "nd-58fca56e01",
+                    "target": "nd-e05f59dd66"
+                }
+            ],
+            "nodes": [
+                {
+                    "comment": "<p><strong><span style=\"font-size: 18px\">⛔️ When something goes wrong</span></strong></p><p><br>This workflow is executed when there's an <strong>unexpected error</strong> in one of the other workflows.</p><p></p><p>You can use this to inform the user of the situation before ending the conversation.</p>",
+                    "type": "comment",
+                    "id": "nd-8ff3d7d295",
+                    "name": "Comment1",
+                    "deletable": true,
+                    "instructions": [],
+                    "height": 148,
+                    "width": 401,
+                    "x": 90,
+                    "y": -45
+                },
+                {
+                    "instructions": [
+                        {
+                            "id": "ins-2762f70004",
+                            "type": "content",
+                            "content": {
+                                "type": "text",
+                                "text": {
+                                    "staticValue": "Sorry, an error occurred. Please try again later",
+                                    "dynamicValue": "",
+                                    "valueType": "static"
+                                },
+                                "typing": {
+                                    "valueType": "static",
+                                    "staticValue": true
+                                }
+                            },
+                            "nodeId": "nd-58fca56e01"
+                        }
+                    ],
+                    "defaultTransition": {
+                        "targetNodeId": "nd-e05f59dd66"
+                    },
+                    "type": "standard",
+                    "id": "nd-58fca56e01",
+                    "name": "Handler",
+                    "deletable": true,
+                    "x": 450,
+                    "y": 120
+                },
+                {
+                    "id": "nd-98dc0bcc87",
+                    "name": "On_Error",
+                    "type": "entry",
+                    "deletable": false,
+                    "variables": [],
+                    "instructions": [
+                        {
+                            "id": "trs-02c7129430",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "destination": {
+                                "node": "nd-58fca56e01"
+                            }
+                        }
+                    ],
+                    "x": 90,
+                    "y": 120
+                },
+                {
+                    "id": "nd-e05f59dd66",
+                    "name": "End",
+                    "type": "end",
+                    "variables": [],
+                    "deletable": false,
+                    "instructions": [
+                        {
+                            "id": "trs-945140a646",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "destination": {
+                                "node": "END"
+                            }
+                        }
+                    ],
+                    "x": 810,
+                    "y": 120
+                }
+            ]
+        },
+        {
+            "id": "wf-timeout",
+            "name": "Timeout",
+            "startNode": "nd-9f7f3268ac",
+            "variables": [],
+            "links": [
+                {
+                    "id": "edg-b0d2adcd13",
+                    "source": "nd-e6c012a652",
+                    "sourcePort": "nd-e6c012a652",
+                    "target": "nd-199fdcf439"
+                },
+                {
+                    "id": "edg-6d17a0591b",
+                    "source": "nd-9f7f3268ac",
+                    "sourcePort": "trs-0c7a9a0003",
+                    "target": "nd-e6c012a652"
+                }
+            ],
+            "nodes": [
+                {
+                    "instructions": [],
+                    "defaultTransition": {
+                        "targetNodeId": "nd-199fdcf439"
+                    },
+                    "type": "standard",
+                    "id": "nd-e6c012a652",
+                    "name": "Handler",
+                    "deletable": true,
+                    "x": 435,
+                    "y": 105
+                },
+                {
+                    "comment": "<p><strong><span style=\"font-size: 18px\">⌛️ When conversation times out</span></strong></p><p><br>This workflow is executed when the conversation <strong>times out</strong> before it had time to flow to an <strong>End Node</strong>.</p><p></p><p>The <strong>Timeout Delay</strong> is configurable in the <strong>Chatbot Settings.</strong></p><p></p><p>You can use this to inform the user of the situation before ending the conversation.</p>",
+                    "type": "comment",
+                    "id": "nd-441efa6c42",
+                    "name": "Comment1",
+                    "deletable": true,
+                    "instructions": [],
+                    "height": 173,
+                    "width": 401,
+                    "x": 105,
+                    "y": -90
+                },
+                {
+                    "id": "nd-9f7f3268ac",
+                    "name": "On_Timeout",
+                    "type": "entry",
+                    "deletable": false,
+                    "variables": [],
+                    "instructions": [
+                        {
+                            "id": "trs-0c7a9a0003",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "destination": {
+                                "node": "nd-e6c012a652"
+                            }
+                        }
+                    ],
+                    "x": 100,
+                    "y": 100
+                },
+                {
+                    "id": "nd-199fdcf439",
+                    "name": "End",
+                    "type": "end",
+                    "variables": [],
+                    "deletable": false,
+                    "instructions": [
+                        {
+                            "id": "trs-bf76943d55",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "destination": {
+                                "node": "END"
+                            }
+                        }
+                    ],
+                    "x": 795,
+                    "y": 105
+                }
+            ]
+        },
+        {
+            "id": "wf-conversation-end",
+            "name": "Conversation End",
+            "startNode": "nd-c0d3bd2c92",
+            "variables": [],
+            "links": [
+                {
+                    "id": "edg-3cb8028ff6",
+                    "source": "nd-c0d3bd2c92",
+                    "sourcePort": "trs-92c6f93b0c",
+                    "target": "nd-2db7499cc6"
+                },
+                {
+                    "id": "edg-8a88f687a0",
+                    "source": "nd-2db7499cc6",
+                    "sourcePort": "nd-2db7499cc6",
+                    "target": "nd-d0c2a6be81"
+                }
+            ],
+            "nodes": [
+                {
+                    "instructions": [],
+                    "defaultTransition": {
+                        "targetNodeId": "nd-d0c2a6be81"
+                    },
+                    "type": "standard",
+                    "id": "nd-2db7499cc6",
+                    "name": "Handler",
+                    "deletable": true,
+                    "x": 420,
+                    "y": 105
+                },
+                {
+                    "comment": "<p><strong><span style=\"font-size: 18px\">👋 Before Conversation Ends</span></strong></p><p><br>This workflow is executed when right before the conversation <strong>Ends Explicitly.</strong></p><p></p><p>An <strong>Explicit Ending</strong> happens when a workflow transitions on an <strong>End Node</strong>.</p>",
+                    "type": "comment",
+                    "id": "nd-6d5d3f41dd",
+                    "name": "Comment1",
+                    "deletable": true,
+                    "instructions": [],
+                    "height": 148,
+                    "width": 461,
+                    "x": 105,
+                    "y": -45
+                },
+                {
+                    "id": "nd-c0d3bd2c92",
+                    "name": "On_Explicit_Ending",
+                    "type": "entry",
+                    "deletable": false,
+                    "variables": [],
+                    "instructions": [
+                        {
+                            "id": "trs-92c6f93b0c",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "destination": {
+                                "node": "nd-2db7499cc6"
+                            }
+                        }
+                    ],
+                    "x": 100,
+                    "y": 100
+                },
+                {
+                    "id": "nd-d0c2a6be81",
+                    "name": "End",
+                    "type": "end",
+                    "variables": [],
+                    "deletable": false,
+                    "instructions": [
+                        {
+                            "id": "trs-7004dbb2b6",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "destination": {
+                                "node": "END"
+                            }
+                        }
+                    ],
+                    "x": 780,
+                    "y": 105
+                }
+            ]
+        },
+        {
+            "id": "wf-5462289166",
+            "name": "emulatorGate",
+            "startNode": "nd-ca4e79364d",
+            "variables": [],
+            "links": [
+                {
+                    "id": "lnk-d7596f7e5a",
+                    "source": "nd-ca4e79364d",
+                    "sourcePort": "trs-755fca53e2",
+                    "target": "nd-2ba8432277"
+                },
+                {
+                    "id": "edg-03f1a056d7",
+                    "source": "nd-2ba8432277",
+                    "sourcePort": "ins-8a5630b920",
+                    "target": "nd-58781c39b0"
+                },
+                {
+                    "id": "edg-f24bc6f52b",
+                    "source": "nd-2ba8432277",
+                    "sourcePort": "nd-2ba8432277",
+                    "target": "nd-dcbac05bd1"
+                },
+                {
+                    "id": "edg-17b6a6936c",
+                    "source": "nd-58781c39b0",
+                    "sourcePort": "nd-58781c39b0",
+                    "target": "nd-225ff74730"
+                }
+            ],
+            "nodes": [
+                {
+                    "instructions": [
+                        {
+                            "id": "trs-2ad5947fcb",
+                            "type": "transition",
+                            "label": "",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "destination": {
+                                "node": "END"
+                            },
+                            "generative": {
+                                "label": "",
+                                "properties": {
+                                    "label": true,
+                                    "condition": true
+                                },
+                                "suggestion": {
+                                    "label": "",
+                                    "condition": "true"
+                                }
+                            }
+                        }
+                    ],
+                    "type": "end",
+                    "id": "nd-225ff74730",
+                    "name": "End1",
+                    "deletable": true,
+                    "x": 1110,
+                    "y": -15
+                },
+                {
+                    "instructions": [
+                        {
+                            "id": "ins-bce58d069b",
+                            "type": "content",
+                            "content": {
+                                "type": "text",
+                                "text": {
+                                    "valueType": "dynamic",
+                                    "dynamicValue": "This bot is pre-built!\n\nTo use this bot simply: \n1. Click the \"Publish\" button at the top.\n2. Once published, click the \"Share\" button.\n3. In the bot page, follow the instructions to configure your bot. \n4. Once your bot is configured, you can share the link to talk to it.",
+                                    "staticValue": ""
+                                },
+                                "typing": {
+                                    "valueType": "static",
+                                    "staticValue": true
+                                }
+                            },
+                            "nodeId": "nd-58781c39b0"
+                        }
+                    ],
+                    "defaultTransition": {
+                        "targetNodeId": "nd-225ff74730"
+                    },
+                    "type": "standard",
+                    "id": "nd-58781c39b0",
+                    "name": "Standard1",
+                    "deletable": true,
+                    "x": 780,
+                    "y": -90
+                },
+                {
+                    "id": "nd-ca4e79364d",
+                    "name": "Entry",
+                    "type": "entry",
+                    "deletable": false,
+                    "variables": [],
+                    "instructions": [
+                        {
+                            "id": "trs-755fca53e2",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "destination": {
+                                "node": "nd-2ba8432277"
+                            }
+                        }
+                    ],
+                    "x": 100,
+                    "y": 100
+                },
+                {
+                    "id": "nd-dcbac05bd1",
+                    "name": "Exit",
+                    "type": "exit",
+                    "variables": [],
+                    "deletable": false,
+                    "instructions": [
+                        {
+                            "id": "trs-cbbf897087",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "destination": {
+                                "node": "#"
+                            }
+                        }
+                    ],
+                    "x": 800,
+                    "y": 100
+                },
+                {
+                    "id": "nd-2ba8432277",
+                    "name": "Standard",
+                    "type": "standard",
+                    "deletable": true,
+                    "instructions": [
+                        {
+                            "id": "ins-8a5630b920",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "event.channel === 'emulator'"
+                            },
+                            "label": "if channel is emulator",
+                            "generative": {
+                                "label": "if channel is emulator",
+                                "suggestion": {
+                                    "condition": "event.channel === 'emulator'"
+                                },
+                                "properties": {
+                                    "condition": true
+                                }
+                            },
+                            "nodeId": "nd-2ba8432277",
+                            "destination": {
+                                "node": "nd-58781c39b0"
+                            }
+                        }
+                    ],
+                    "defaultTransition": {
+                        "targetNodeId": "nd-dcbac05bd1"
+                    },
+                    "x": 435,
+                    "y": -15
+                }
+            ],
+            "parentFolder": "dir-7c99f5cf2e"
+        },
+        {
+            "id": "wf-e96caf36c5",
+            "name": "index",
+            "startNode": "nd-9d3ecc54ea",
+            "variables": [],
+            "links": [
+                {
+                    "id": "edg-a05b91443d",
+                    "source": "nd-9d3ecc54ea",
+                    "sourcePort": "trs-fa699af48a",
+                    "target": "nd-765d9d79cd"
+                },
+                {
+                    "id": "edg-8c25f85903",
+                    "source": "nd-765d9d79cd",
+                    "sourcePort": "trs-cc59241793",
+                    "target": "nd-d45e372cb3"
+                },
+                {
+                    "id": "edg-cc2d8f8441",
+                    "source": "nd-d45e372cb3",
+                    "sourcePort": "trs-c76fd50fa4",
+                    "target": "nd-78b908389f"
+                },
+                {
+                    "id": "edg-636df32bb4",
+                    "source": "nd-78b908389f",
+                    "sourcePort": "trs-dc16d6ac16",
+                    "target": "nd-181fef282b"
+                }
+            ],
+            "nodes": [
+                {
+                    "instructions": [
+                        {
+                            "id": "ins-086e92d3c1",
+                            "type": "skill",
+                            "name": "handleResponse1",
+                            "flowId": "wf-f4260d44cf",
+                            "exitNodes": [
+                                "nd-5f1bdd7061"
+                            ],
+                            "transitions": [
+                                {
+                                    "id": "trs-dc16d6ac16",
+                                    "type": "transition",
+                                    "label": "Exit",
+                                    "condition": {
+                                        "type": "expression",
+                                        "payload": "lastNode=nd-5f1bdd7061"
+                                    },
+                                    "destination": {
+                                        "node": "nd-181fef282b"
+                                    },
+                                    "generative": {
+                                        "label": "Exit",
+                                        "properties": {
+                                            "label": true,
+                                            "condition": true
+                                        },
+                                        "suggestion": {
+                                            "label": "Exit",
+                                            "condition": "lastNode=nd-5f1bdd7061"
+                                        }
+                                    }
+                                }
+                            ],
+                            "nodeId": "nd-78b908389f"
+                        }
+                    ],
+                    "type": "standard",
+                    "id": "nd-78b908389f",
+                    "name": "Standard3",
+                    "deletable": true,
+                    "x": 420,
+                    "y": 225
+                },
+                {
+                    "instructions": [
+                        {
+                            "id": "ins-5d369ed9ef",
+                            "type": "skill",
+                            "name": "configureBot1",
+                            "flowId": "wf-fee2d76587",
+                            "exitNodes": [
+                                "nd-ffaa742743"
+                            ],
+                            "transitions": [
+                                {
+                                    "id": "trs-c76fd50fa4",
+                                    "type": "transition",
+                                    "label": "Exit",
+                                    "condition": {
+                                        "type": "expression",
+                                        "payload": "lastNode=nd-ffaa742743"
+                                    },
+                                    "destination": {
+                                        "node": "nd-78b908389f"
+                                    },
+                                    "generative": {
+                                        "label": "Exit",
+                                        "properties": {
+                                            "label": true,
+                                            "condition": true
+                                        },
+                                        "suggestion": {
+                                            "label": "Exit",
+                                            "condition": "lastNode=nd-ffaa742743"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "type": "standard",
+                    "id": "nd-d45e372cb3",
+                    "name": "Standard2",
+                    "deletable": true,
+                    "x": 420,
+                    "y": 15
+                },
+                {
+                    "instructions": [
+                        {
+                            "id": "ins-d9bd0b6a94",
+                            "type": "skill",
+                            "name": "emulatorGate1",
+                            "flowId": "wf-5462289166",
+                            "exitNodes": [
+                                "nd-dcbac05bd1"
+                            ],
+                            "transitions": [
+                                {
+                                    "id": "trs-cc59241793",
+                                    "type": "transition",
+                                    "label": "Exit",
+                                    "condition": {
+                                        "type": "expression",
+                                        "payload": "lastNode=nd-dcbac05bd1"
+                                    },
+                                    "destination": {
+                                        "node": "nd-d45e372cb3"
+                                    },
+                                    "generative": {
+                                        "label": "Exit",
+                                        "properties": {
+                                            "label": true,
+                                            "condition": true
+                                        },
+                                        "suggestion": {
+                                            "label": "Exit",
+                                            "condition": "lastNode=nd-dcbac05bd1"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "type": "standard",
+                    "id": "nd-765d9d79cd",
+                    "name": "Standard1",
+                    "deletable": true,
+                    "x": 420,
+                    "y": -195
+                },
+                {
+                    "id": "nd-9d3ecc54ea",
+                    "name": "Entry",
+                    "type": "entry",
+                    "deletable": false,
+                    "variables": [],
+                    "instructions": [
+                        {
+                            "id": "trs-fa699af48a",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "destination": {
+                                "node": "nd-765d9d79cd"
+                            }
+                        }
+                    ],
+                    "x": 100,
+                    "y": 100
+                },
+                {
+                    "id": "nd-181fef282b",
+                    "name": "Exit",
+                    "type": "exit",
+                    "variables": [],
+                    "deletable": false,
+                    "instructions": [
+                        {
+                            "id": "trs-ae7a2ff2a8",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "destination": {
+                                "node": "#"
+                            }
+                        }
+                    ],
+                    "x": 800,
+                    "y": 100
+                }
+            ],
+            "parentFolder": "dir-7c99f5cf2e"
+        },
+        {
+            "topicId": "tpc-global",
+            "id": "wf-main",
+            "name": "Main",
+            "startNode": "nd-2bb9db230d",
+            "variables": [],
+            "links": [
+                {
+                    "id": "edg-9410bf6b49",
+                    "source": "nd-2bb9db230d",
+                    "sourcePort": "trs-8b0779edc5",
+                    "target": "nd-ad8dac93c8"
+                },
+                {
+                    "id": "edg-623e05f81f",
+                    "source": "nd-ad8dac93c8",
+                    "sourcePort": "trs-4e0779f7d7",
+                    "target": "nd-80ac4ff158"
+                }
+            ],
+            "nodes": [
+                {
+                    "comment": "<p><span style=\"font-size: 32px\">Getting Started</span></p><p></p><ol><li><p><span style=\"font-size: 18px\">Click the </span><strong><span style=\"font-size: 18px\">Publish</span></strong><span style=\"font-size: 18px\"> button above</span></p></li><li><p><span style=\"font-size: 18px\">Click the </span><strong><span style=\"font-size: 18px\">Share</span></strong><span style=\"font-size: 18px\"> button</span></p></li><li><p><span style=\"font-size: 18px\">Follow the steps in the bot to configure it</span></p></li><li><p><span style=\"font-size: 18px\">Configure your channels in the </span><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://app.botpress.cloud/hub\"><span style=\"font-size: 18px\">Botpress Hub.</span></a></p></li></ol>",
+                    "type": "comment",
+                    "id": "nd-f19b353d39",
+                    "name": "Comment1",
+                    "deletable": true,
+                    "instructions": [],
+                    "height": 218,
+                    "width": 491,
+                    "x": -45,
+                    "y": -420
+                },
+                {
+                    "instructions": [
+                        {
+                            "id": "ins-4845a288f5",
+                            "type": "skill",
+                            "name": "index1",
+                            "flowId": "wf-e96caf36c5",
+                            "exitNodes": [
+                                "nd-181fef282b"
+                            ],
+                            "transitions": [
+                                {
+                                    "id": "trs-4e0779f7d7",
+                                    "type": "transition",
+                                    "label": "Exit",
+                                    "condition": {
+                                        "type": "expression",
+                                        "payload": "lastNode=nd-181fef282b"
+                                    },
+                                    "destination": {
+                                        "node": "nd-80ac4ff158"
+                                    },
+                                    "generative": {
+                                        "label": "Exit",
+                                        "properties": {
+                                            "label": true,
+                                            "condition": true
+                                        },
+                                        "suggestion": {
+                                            "label": "Exit",
+                                            "condition": "lastNode=nd-181fef282b"
+                                        }
+                                    }
+                                }
+                            ],
+                            "variables": []
+                        }
+                    ],
+                    "type": "standard",
+                    "id": "nd-ad8dac93c8",
+                    "name": "Start",
+                    "deletable": true,
+                    "x": 45,
+                    "y": -180
+                },
+                {
+                    "id": "nd-2bb9db230d",
+                    "name": "Start",
+                    "type": "start",
+                    "deletable": false,
+                    "instructions": [
+                        {
+                            "id": "trs-8b0779edc5",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "destination": {
+                                "node": "nd-ad8dac93c8"
+                            }
+                        }
+                    ],
+                    "x": -75,
+                    "y": -180,
+                    "kbPriority": {
+                        "enabled": true,
+                        "searchScope": "specific",
+                        "kbs": []
+                    }
+                },
+                {
+                    "id": "nd-80ac4ff158",
+                    "name": "End",
+                    "type": "end",
+                    "deletable": false,
+                    "instructions": [
+                        {
+                            "id": "trs-0260f5e672",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "destination": {
+                                "node": "END"
+                            }
+                        }
+                    ],
+                    "x": 360,
+                    "y": -180
+                }
+            ],
+            "parentFolder": "root"
+        },
+        {
+            "id": "wf-fee2d76587",
+            "name": "configureBot",
+            "startNode": "nd-ad64878a34",
+            "variables": [
+                {
+                    "type": "string",
+                    "name": "errorMessage",
+                    "description": "",
+                    "id": "var-718e9080d5",
+                    "scope": "workflow",
+                    "defaultValue": ""
+                }
+            ],
+            "links": [
+                {
+                    "id": "edg-26848a7ca0",
+                    "source": "nd-ad64878a34",
+                    "sourcePort": "trs-ebe97cfca0",
+                    "target": "nd-30e4d5e156"
+                },
+                {
+                    "id": "edg-9a9f90c23a",
+                    "source": "nd-30e4d5e156",
+                    "sourcePort": "ins-a6631e91c7",
+                    "target": "nd-ffaa742743"
+                },
+                {
+                    "id": "edg-c977303e1d",
+                    "source": "nd-4b02b2eab0",
+                    "sourcePort": "ins-5d5cda8bab",
+                    "target": "nd-5f48c0db72"
+                },
+                {
+                    "id": "edg-5069a50a49",
+                    "source": "nd-5f48c0db72",
+                    "sourcePort": "nd-5f48c0db72",
+                    "target": "nd-ffaa742743"
+                },
+                {
+                    "id": "edg-eb7064e5e3",
+                    "source": "nd-4b02b2eab0",
+                    "sourcePort": "nd-4b02b2eab0",
+                    "target": "nd-30e4d5e156"
+                },
+                {
+                    "id": "edg-911bd290b8",
+                    "source": "nd-30e4d5e156",
+                    "sourcePort": "nd-30e4d5e156",
+                    "target": "nd-4e65e38268"
+                },
+                {
+                    "id": "edg-5b1753e068",
+                    "source": "nd-6be99503b7",
+                    "sourcePort": "ins-236a4a323e",
+                    "target": "nd-4b02b2eab0"
+                },
+                {
+                    "id": "edg-73a6fe52cb",
+                    "source": "nd-6be99503b7",
+                    "sourcePort": "nd-6be99503b7",
+                    "target": "nd-4b02b2eab0"
+                },
+                {
+                    "id": "edg-1e461dba39",
+                    "source": "nd-4e65e38268",
+                    "sourcePort": "ins-d95fc248b0",
+                    "target": "nd-6be99503b7"
+                },
+                {
+                    "id": "edg-a773cecc08",
+                    "source": "nd-4e65e38268",
+                    "sourcePort": "nd-4e65e38268",
+                    "target": "nd-6be99503b7"
+                },
+                {
+                    "id": "edg-aa94dace10",
+                    "source": "nd-ad64878a34",
+                    "sourcePort": "ins-d06952f7b6",
+                    "target": "nd-37fd240f1b"
+                },
+                {
+                    "id": "edg-cbcaacd89a",
+                    "source": "nd-37fd240f1b",
+                    "sourcePort": "nd-37fd240f1b",
+                    "target": "nd-19e9bfae25"
+                }
+            ],
+            "nodes": [
+                {
+                    "instructions": [
+                        {
+                            "id": "trs-080f70e4b2",
+                            "type": "transition",
+                            "label": "",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "destination": {
+                                "node": "END"
+                            },
+                            "generative": {
+                                "label": "",
+                                "properties": {
+                                    "label": true,
+                                    "condition": true
+                                },
+                                "suggestion": {
+                                    "label": "",
+                                    "condition": "true"
+                                }
+                            }
+                        }
+                    ],
+                    "type": "end",
+                    "id": "nd-19e9bfae25",
+                    "name": "End1",
+                    "deletable": true,
+                    "x": 840,
+                    "y": -435
+                },
+                {
+                    "instructions": [
+                        {
+                            "id": "ins-2440294b48",
+                            "type": "action",
+                            "code": "bot.openAIToken = null\nbot.assistantId = null",
+                            "origin": "builtin",
+                            "nodeId": "nd-37fd240f1b",
+                            "label": "Setting up null values for OpenAI token and assistant ID.",
+                            "isCustomLabel": false,
+                            "transpiledCode": "bot.openAIToken = null;\nbot.assistantId = null;\n",
+                            "section": "instructions"
+                        },
+                        {
+                            "id": "ins-fd2ebbf244",
+                            "type": "content",
+                            "content": {
+                                "type": "text",
+                                "text": {
+                                    "valueType": "dynamic",
+                                    "dynamicValue": "Succesfully Reset Bot!",
+                                    "staticValue": ""
+                                },
+                                "typing": {
+                                    "valueType": "static",
+                                    "staticValue": true
+                                }
+                            },
+                            "nodeId": "nd-37fd240f1b"
+                        }
+                    ],
+                    "defaultTransition": {
+                        "targetNodeId": "nd-19e9bfae25"
+                    },
+                    "type": "standard",
+                    "id": "nd-37fd240f1b",
+                    "name": "Standard7",
+                    "deletable": true,
+                    "x": 450,
+                    "y": -450
+                },
+                {
+                    "instructions": [
+                        {
+                            "id": "ins-8e35a62365",
+                            "type": "content",
+                            "content": {
+                                "type": "text",
+                                "text": {
+                                    "valueType": "dynamic",
+                                    "dynamicValue": "Congratulations! Your bot was succesfully set up! You can use the shareable URL to share it with others or head to your Botpress dashboard to deploy to more channels :)",
+                                    "staticValue": ""
+                                },
+                                "typing": {
+                                    "valueType": "static",
+                                    "staticValue": true
+                                }
+                            },
+                            "nodeId": "nd-5f48c0db72"
+                        },
+                        {
+                            "id": "ins-803a614cd1",
+                            "type": "wait",
+                            "label": "Wait for User Input",
+                            "description": "This card will wait for the user to send a message before continuing to the next card. It does not validate or manipulate the user input. You can access the user input in the next card using the `{{event.preview}}` variable.",
+                            "nodeId": "nd-5f48c0db72"
+                        }
+                    ],
+                    "defaultTransition": {
+                        "targetNodeId": "nd-ffaa742743"
+                    },
+                    "type": "standard",
+                    "id": "nd-5f48c0db72",
+                    "name": "Standard6",
+                    "deletable": true,
+                    "x": 1380,
+                    "y": 15
+                },
+                {
+                    "instructions": [
+                        {
+                            "id": "ins-034cbe336e",
+                            "type": "action",
+                            "code": "try {\n  const response = await axios.request({\n    method: 'get',\n    maxBodyLength: Infinity,\n    url: `https://api.openai.com/v1/assistants/${bot.assistantId}`,\n    headers: {\n      'OpenAI-Beta': 'assistants=v1',\n      Authorization: `Bearer ${bot.openAIToken}`,\n      'Content-Type': 'application/json'\n    }\n  })\n\n  if (response.data.tools.some((a) => a.type === 'function')) {\n    workflow.errorMessage = \"Error! Incompatible Assistant. Detected a function, which isn't yet supported!\"\n  } else {\n    workflow.errorMessage = null\n  }\n} catch (error) {\n  workflow.errorMessage = error.message\n}\n",
+                            "origin": "builtin",
+                            "nodeId": "nd-4b02b2eab0",
+                            "transpiledCode": "try {\n  const response = await axios.request({\n    method: \"get\",\n    maxBodyLength: Infinity,\n    url: `https://api.openai.com/v1/assistants/${bot.assistantId}`,\n    headers: {\n      \"OpenAI-Beta\": \"assistants=v1\",\n      Authorization: `Bearer ${bot.openAIToken}`,\n      \"Content-Type\": \"application/json\"\n    }\n  });\n  if (response.data.tools.some((a) => a.type === \"function\")) {\n    workflow.errorMessage = \"Error! Incompatible Assistant. Detected a function, which isn't yet supported!\";\n  } else {\n    workflow.errorMessage = null;\n  }\n} catch (error) {\n  workflow.errorMessage = error.message;\n}\n",
+                            "label": "Check if an assistant supports a specific function.",
+                            "isCustomLabel": false
+                        },
+                        {
+                            "id": "ins-5d5cda8bab",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "!workflow.errorMessage"
+                            },
+                            "label": "if there is no error message",
+                            "generative": {
+                                "label": "if there is no error message",
+                                "suggestion": {
+                                    "condition": "!workflow.errorMessage"
+                                },
+                                "properties": {
+                                    "condition": true
+                                }
+                            },
+                            "nodeId": "nd-4b02b2eab0",
+                            "destination": {
+                                "node": "nd-5f48c0db72"
+                            }
+                        },
+                        {
+                            "id": "ins-2dfe4d3f0c",
+                            "type": "content",
+                            "content": {
+                                "type": "text",
+                                "text": {
+                                    "valueType": "dynamic",
+                                    "dynamicValue": "There was a problem with the token or the assistant id you provided. You'll have to try again. \n\n\nError message: \n{{workflow.errorMessage}}",
+                                    "staticValue": ""
+                                },
+                                "typing": {
+                                    "valueType": "static",
+                                    "staticValue": true
+                                }
+                            },
+                            "nodeId": "nd-4b02b2eab0"
+                        },
+                        {
+                            "id": "ins-86f13e4155",
+                            "type": "action",
+                            "code": "bot.openAIToken = null\nbot.assistantId = null",
+                            "origin": "builtin",
+                            "nodeId": "nd-4b02b2eab0",
+                            "label": "Setting up null values for OpenAI token and assistant ID.",
+                            "isCustomLabel": false,
+                            "transpiledCode": "bot.openAIToken = null;\nbot.assistantId = null;\n",
+                            "section": "instructions"
+                        }
+                    ],
+                    "defaultTransition": {
+                        "targetNodeId": "nd-30e4d5e156"
+                    },
+                    "type": "standard",
+                    "id": "nd-4b02b2eab0",
+                    "name": "Standard5",
+                    "deletable": true,
+                    "x": 1020,
+                    "y": 15
+                },
+                {
+                    "instructions": [
+                        {
+                            "id": "ins-a6631e91c7",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "bot.assistantId.length > 0 && bot.openAIToken.length > 0"
+                            },
+                            "label": "if assistantId and openAIToken are both set to strings of length > 0",
+                            "generative": {
+                                "label": "if assistantId and openAIToken are both set to strings of length > 0",
+                                "suggestion": {
+                                    "condition": "bot.assistantId.length > 0 && bot.openAIToken.length > 0"
+                                },
+                                "properties": {
+                                    "condition": true
+                                }
+                            },
+                            "nodeId": "nd-30e4d5e156",
+                            "destination": {
+                                "node": "nd-ffaa742743"
+                            }
+                        }
+                    ],
+                    "defaultTransition": {
+                        "targetNodeId": "nd-4e65e38268"
+                    },
+                    "type": "standard",
+                    "id": "nd-30e4d5e156",
+                    "name": "Standard4",
+                    "deletable": true,
+                    "x": 525,
+                    "y": -165
+                },
+                {
+                    "id": "nd-4e65e38268",
+                    "deletable": true,
+                    "type": "standard",
+                    "instructions": [
+                        {
+                            "id": "ins-d95fc248b0",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "bot.assistantId !== undefined && bot.assistantId !== null && bot.assistantId !== '';"
+                            },
+                            "label": "if assistantId is set",
+                            "generative": {
+                                "label": "if assistantId is set",
+                                "suggestion": {
+                                    "condition": "bot.assistantId !== undefined && bot.assistantId !== null && bot.assistantId !== '';"
+                                },
+                                "properties": {
+                                    "condition": true
+                                }
+                            },
+                            "nodeId": "nd-972fdeea7a",
+                            "destination": {
+                                "node": "nd-6be99503b7"
+                            }
+                        },
+                        {
+                            "id": "ins-767eb9694f",
+                            "type": "content",
+                            "content": {
+                                "type": "text",
+                                "text": {
+                                    "valueType": "dynamic",
+                                    "dynamicValue": "Identify which assistant we'll use.\n\n1. Go to [your assistants page](https://platform.openai.com/assistants)\n2. Click the assistant you want to use\n3. Copy the text that starts with \"asst_\" underneath the \"Name\" field\n4. Paste it here",
+                                    "staticValue": ""
+                                },
+                                "typing": {
+                                    "valueType": "static",
+                                    "staticValue": true
+                                }
+                            },
+                            "nodeId": "nd-4e65e38268"
+                        },
+                        {
+                            "id": "ins-71cdf6f631",
+                            "type": "wait",
+                            "label": "Wait for User Input",
+                            "description": "This card will wait for the user to send a message before continuing to the next card. It does not validate or manipulate the user input. You can access the user input in the next card using the `{{event.preview}}` variable.",
+                            "nodeId": "nd-4e65e38268"
+                        },
+                        {
+                            "id": "ins-a9ecfb8aa2",
+                            "type": "action",
+                            "code": "bot.assistantId = event.preview.replace(/^(\\s|(\\\\n))*|(\\s|(\\\\n))*$/g, '')",
+                            "origin": "builtin",
+                            "nodeId": "nd-4e65e38268",
+                            "label": "Assigns the OpenAI token from the event preview to the bot.",
+                            "isCustomLabel": false,
+                            "transpiledCode": "bot.assistantId = event.preview.replace(/^(\\s|(\\\\n))*|(\\s|(\\\\n))*$/g, \"\");\n"
+                        }
+                    ],
+                    "defaultTransition": {
+                        "targetNodeId": "nd-6be99503b7"
+                    },
+                    "name": "Standard2",
+                    "x": 105,
+                    "y": 120
+                },
+                {
+                    "instructions": [
+                        {
+                            "id": "ins-236a4a323e",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "bot.openAIToken !== undefined && bot.openAIToken !== null && bot.openAIToken !== '';"
+                            },
+                            "label": "if openAIToken is set",
+                            "generative": {
+                                "label": "if openAIToken is set",
+                                "suggestion": {
+                                    "condition": "!!bot.openAIToken"
+                                },
+                                "properties": {
+                                    "condition": false
+                                }
+                            },
+                            "nodeId": "nd-5525592df5",
+                            "destination": {
+                                "node": "nd-4b02b2eab0"
+                            }
+                        },
+                        {
+                            "id": "ins-d70a76dfd3",
+                            "type": "content",
+                            "content": {
+                                "type": "text",
+                                "text": {
+                                    "valueType": "dynamic",
+                                    "dynamicValue": "Provide the OpenAI key.\n\n1. Go to your [OpenAI api keys page](https://platform.openai.com/api-keys)\n2. Click \"Create new secret key\"\n3. Give it a name, for example: \"botpress\"\n4. Copy the generated key\n5. Paste it here and submit",
+                                    "staticValue": ""
+                                },
+                                "typing": {
+                                    "valueType": "static",
+                                    "staticValue": true
+                                }
+                            },
+                            "nodeId": "nd-6be99503b7"
+                        },
+                        {
+                            "id": "ins-3faef01a87",
+                            "type": "wait",
+                            "label": "Wait for User Input",
+                            "description": "This card will wait for the user to send a message before continuing to the next card. It does not validate or manipulate the user input. You can access the user input in the next card using the `{{event.preview}}` variable.",
+                            "nodeId": "nd-6be99503b7"
+                        },
+                        {
+                            "id": "ins-2db3058a0c",
+                            "type": "action",
+                            "code": "bot.openAIToken = event.preview.replace(/^(\\s|(\\\\n))*|(\\s|(\\\\n))*$/g, '')",
+                            "origin": "builtin",
+                            "nodeId": "nd-6be99503b7",
+                            "label": "Remove leading and trailing whitespace from a string.",
+                            "isCustomLabel": false,
+                            "transpiledCode": "bot.openAIToken = event.preview.replace(/^(\\s|(\\\\n))*|(\\s|(\\\\n))*$/g, \"\");\n"
+                        }
+                    ],
+                    "defaultTransition": {
+                        "targetNodeId": "nd-4b02b2eab0"
+                    },
+                    "type": "standard",
+                    "id": "nd-6be99503b7",
+                    "name": "Standard1",
+                    "deletable": true,
+                    "x": 525,
+                    "y": 120
+                },
+                {
+                    "id": "nd-ad64878a34",
+                    "name": "Entry",
+                    "type": "entry",
+                    "deletable": false,
+                    "variables": [],
+                    "instructions": [
+                        {
+                            "id": "ins-d06952f7b6",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "event.preview != \"\" && event.preview === env.RESET_SECRET"
+                            },
+                            "label": "env.RESET_SECRET exists and is matched by event.preview",
+                            "generative": {
+                                "label": "env.RESET_SECRET exists and is matched by event.preview",
+                                "suggestion": {
+                                    "condition": "event.preview === process.env.RESET_SECRET"
+                                },
+                                "properties": {
+                                    "condition": false
+                                }
+                            },
+                            "nodeId": "nd-ad64878a34",
+                            "destination": {
+                                "node": "nd-37fd240f1b"
+                            }
+                        },
+                        {
+                            "id": "trs-ebe97cfca0",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "destination": {
+                                "node": "nd-30e4d5e156"
+                            }
+                        }
+                    ],
+                    "x": 30,
+                    "y": -330
+                },
+                {
+                    "id": "nd-ffaa742743",
+                    "name": "Exit",
+                    "type": "exit",
+                    "variables": [],
+                    "deletable": false,
+                    "instructions": [
+                        {
+                            "id": "trs-ef7daf2891",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "destination": {
+                                "node": "#"
+                            }
+                        }
+                    ],
+                    "x": 1110,
+                    "y": -180
+                }
+            ],
+            "parentFolder": "dir-7c99f5cf2e"
+        },
+        {
+            "id": "wf-f4260d44cf",
+            "name": "handleResponse",
+            "startNode": "nd-fec43f4930",
+            "variables": [
+                {
+                    "id": "var-c44866b343",
+                    "type": "string",
+                    "name": "response",
+                    "description": "",
+                    "scope": "workflow",
+                    "defaultValue": ""
+                },
+                {
+                    "id": "var-105157661a",
+                    "type": "string",
+                    "name": "threadId",
+                    "description": "",
+                    "scope": "workflow",
+                    "defaultValue": ""
+                }
+            ],
+            "links": [
+                {
+                    "id": "edg-f073501a49",
+                    "source": "nd-fec43f4930",
+                    "sourcePort": "trs-0e5fb272ec",
+                    "target": "nd-a7a48e65ed"
+                },
+                {
+                    "id": "edg-dfc7eb387f",
+                    "source": "nd-a7a48e65ed",
+                    "sourcePort": "ins-0cc385a98e",
+                    "target": "nd-a7a48e65ed"
+                }
+            ],
+            "nodes": [
+                {
+                    "instructions": [
+                        {
+                            "id": "ins-4ae04f1f33",
+                            "type": "action",
+                            "code": "const threadIds = await ThreadsTable.findRecords({ filter: { conversationId: event.conversationId }, limit: 1 })\nworkflow.threadId = threadIds[0]?.threadId\n",
+                            "origin": "builtin",
+                            "nodeId": "nd-83a5699645",
+                            "label": "Find and assign the thread ID for a conversation.",
+                            "isCustomLabel": false,
+                            "transpiledCode": "const threadIds = await ThreadsTable.findRecords({ filter: { conversationId: event.conversationId }, limit: 1 });\nworkflow.threadId = threadIds[0]?.threadId;\n"
+                        },
+                        {
+                            "id": "ins-d23f63842e",
+                            "type": "action",
+                            "code": "if (!workflow.threadId) {\n  let data = JSON.stringify({})\n\n  let config = {\n    method: 'post',\n    maxBodyLength: Infinity,\n    url: 'https://api.openai.com/v1/threads',\n    headers: {\n      'OpenAI-Beta': 'assistants=v1',\n      Authorization: 'Bearer ' + bot.openAIToken,\n      'Content-Type': 'application/json'\n    },\n    data: data\n  }\n\n  const response = await axios.request(config)\n\n  workflow.threadId = response.data.id\n  await ThreadsTable.createRecord({\n    threadId: workflow.threadId,\n    conversationId: event.conversationId\n  })\n}\n",
+                            "origin": "builtin",
+                            "nodeId": "nd-83a5699645",
+                            "label": "Create a new thread and record its ID in a table.",
+                            "isCustomLabel": false,
+                            "transpiledCode": "if (!workflow.threadId) {\n  let data = JSON.stringify({});\n  let config = {\n    method: \"post\",\n    maxBodyLength: Infinity,\n    url: \"https://api.openai.com/v1/threads\",\n    headers: {\n      \"OpenAI-Beta\": \"assistants=v1\",\n      Authorization: \"Bearer \" + bot.openAIToken,\n      \"Content-Type\": \"application/json\"\n    },\n    data\n  };\n  const response = await axios.request(config);\n  workflow.threadId = response.data.id;\n  await ThreadsTable.createRecord({\n    threadId: workflow.threadId,\n    conversationId: event.conversationId\n  });\n}\n"
+                        },
+                        {
+                            "id": "ins-dd14e253cc",
+                            "type": "action",
+                            "code": "let data = JSON.stringify({\n  role: 'user',\n  content: event.preview\n})\n\nlet config = {\n  method: 'post',\n  maxBodyLength: Infinity,\n  url: `https://api.openai.com/v1/threads/${workflow.threadId}/messages`,\n  headers: {\n    'OpenAI-Beta': 'assistants=v1',\n    Authorization: `Bearer ${bot.openAIToken}`,\n    'Content-Type': 'application/json'\n  },\n  data: data\n}\n\nawait axios.request(config)\n",
+                            "origin": "builtin",
+                            "nodeId": "nd-83a5699645",
+                            "label": "Send a user message to an OpenAI assistant.",
+                            "isCustomLabel": false,
+                            "transpiledCode": "let data = JSON.stringify({\n  role: \"user\",\n  content: event.preview\n});\nlet config = {\n  method: \"post\",\n  maxBodyLength: Infinity,\n  url: `https://api.openai.com/v1/threads/${workflow.threadId}/messages`,\n  headers: {\n    \"OpenAI-Beta\": \"assistants=v1\",\n    Authorization: `Bearer ${bot.openAIToken}`,\n    \"Content-Type\": \"application/json\"\n  },\n  data\n};\nawait axios.request(config);\n"
+                        },
+                        {
+                            "id": "ins-9b68a27d99",
+                            "type": "action",
+                            "code": "const creationResponse = await axios.request({\n  method: 'post',\n  maxBodyLength: Infinity,\n  url: `https://api.openai.com/v1/threads/${workflow.threadId}/runs`,\n  headers: {\n    'OpenAI-Beta': 'assistants=v1',\n    Authorization: `Bearer ${bot.openAIToken}`,\n    'Content-Type': 'application/json'\n  },\n  data: JSON.stringify({\n    assistant_id: bot.assistantId\n  })\n})\n\nconst runId = creationResponse.data.id\n\nconst waitTillRunComplete = async () => {\n  const statusResponse = await axios.request({\n    method: 'get',\n    maxBodyLength: Infinity,\n    url: `https://api.openai.com/v1/threads/${workflow.threadId}/runs/${runId}`,\n    headers: {\n      'OpenAI-Beta': 'assistants=v1',\n      Authorization: `Bearer ${bot.openAIToken}`,\n      'Content-Type': 'application/json'\n    }\n  })\n\n  if (['queued', 'in_progress'].includes(statusResponse.data.status) === false) {\n    console.log('the status is:', statusResponse.data.status)\n    return\n  }\n  await new Promise((resolve) => {\n    setTimeout(resolve, 1000)\n  })\n  await waitTillRunComplete()\n}\n\nawait waitTillRunComplete()\n",
+                            "origin": "builtin",
+                            "nodeId": "nd-83a5699645",
+                            "label": "Asynchronously creates and waits for completion of a thread run.",
+                            "isCustomLabel": false,
+                            "transpiledCode": "var __defProp = Object.defineProperty;\nvar __name = (target, value) => __defProp(target, \"name\", { value, configurable: true });\nconst creationResponse = await axios.request({\n  method: \"post\",\n  maxBodyLength: Infinity,\n  url: `https://api.openai.com/v1/threads/${workflow.threadId}/runs`,\n  headers: {\n    \"OpenAI-Beta\": \"assistants=v1\",\n    Authorization: `Bearer ${bot.openAIToken}`,\n    \"Content-Type\": \"application/json\"\n  },\n  data: JSON.stringify({\n    assistant_id: bot.assistantId\n  })\n});\nconst runId = creationResponse.data.id;\nconst waitTillRunComplete = /* @__PURE__ */ __name(async () => {\n  const statusResponse = await axios.request({\n    method: \"get\",\n    maxBodyLength: Infinity,\n    url: `https://api.openai.com/v1/threads/${workflow.threadId}/runs/${runId}`,\n    headers: {\n      \"OpenAI-Beta\": \"assistants=v1\",\n      Authorization: `Bearer ${bot.openAIToken}`,\n      \"Content-Type\": \"application/json\"\n    }\n  });\n  if ([\"queued\", \"in_progress\"].includes(statusResponse.data.status) === false) {\n    console.log(\"the status is:\", statusResponse.data.status);\n    return;\n  }\n  await new Promise((resolve) => {\n    setTimeout(resolve, 1e3);\n  });\n  await waitTillRunComplete();\n}, \"waitTillRunComplete\");\nawait waitTillRunComplete();\n"
+                        },
+                        {
+                            "id": "ins-45d9de55f3",
+                            "type": "action",
+                            "code": "const response = await axios.request({\n  method: 'get',\n  maxBodyLength: Infinity,\n  url: `https://api.openai.com/v1/threads/${workflow.threadId}/messages`,\n  headers: {\n    'OpenAI-Beta': 'assistants=v1',\n    Authorization: `Bearer ${bot.openAIToken}`,\n    'Content-Type': 'application/json'\n  }\n})\n\nworkflow.response = response.data.data[0].content[0].text.value\n",
+                            "origin": "builtin",
+                            "nodeId": "nd-83a5699645",
+                            "label": "Retrieve the first message content from an OpenAI thread.",
+                            "isCustomLabel": false,
+                            "transpiledCode": "const response = await axios.request({\n  method: \"get\",\n  maxBodyLength: Infinity,\n  url: `https://api.openai.com/v1/threads/${workflow.threadId}/messages`,\n  headers: {\n    \"OpenAI-Beta\": \"assistants=v1\",\n    Authorization: `Bearer ${bot.openAIToken}`,\n    \"Content-Type\": \"application/json\"\n  }\n});\nworkflow.response = response.data.data[0].content[0].text.value;\n"
+                        },
+                        {
+                            "id": "ins-6f1d13e103",
+                            "type": "content",
+                            "content": {
+                                "type": "text",
+                                "text": {
+                                    "valueType": "dynamic",
+                                    "dynamicValue": "@workflow.response ",
+                                    "staticValue": ""
+                                },
+                                "typing": {
+                                    "valueType": "static",
+                                    "staticValue": true
+                                }
+                            },
+                            "nodeId": "nd-83a5699645"
+                        },
+                        {
+                            "id": "ins-d4b7059ea9",
+                            "type": "wait",
+                            "label": "Wait for User Input",
+                            "description": "This card will wait for the user to send a message before continuing to the next card. It does not validate or manipulate the user input. You can access the user input in the next card using the `{{event.preview}}` variable.",
+                            "nodeId": "nd-a7a48e65ed"
+                        },
+                        {
+                            "id": "ins-0cc385a98e",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "label": "always",
+                            "generative": {
+                                "label": "always",
+                                "suggestion": {
+                                    "condition": "true"
+                                },
+                                "properties": {
+                                    "condition": true
+                                }
+                            },
+                            "nodeId": "nd-a7a48e65ed",
+                            "destination": {
+                                "node": "nd-a7a48e65ed"
+                            }
+                        }
+                    ],
+                    "type": "standard",
+                    "id": "nd-a7a48e65ed",
+                    "name": "Standard1",
+                    "deletable": true,
+                    "x": 450,
+                    "y": -30
+                },
+                {
+                    "id": "nd-fec43f4930",
+                    "name": "Entry",
+                    "type": "entry",
+                    "deletable": false,
+                    "variables": [],
+                    "instructions": [
+                        {
+                            "id": "trs-0e5fb272ec",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "destination": {
+                                "node": "nd-a7a48e65ed"
+                            }
+                        }
+                    ],
+                    "x": 100,
+                    "y": 100
+                },
+                {
+                    "id": "nd-5f1bdd7061",
+                    "name": "Exit",
+                    "type": "exit",
+                    "variables": [],
+                    "deletable": false,
+                    "instructions": [
+                        {
+                            "id": "trs-81cb8a5136",
+                            "type": "transition",
+                            "condition": {
+                                "type": "expression",
+                                "payload": "true"
+                            },
+                            "destination": {
+                                "node": "#"
+                            }
+                        }
+                    ],
+                    "x": 800,
+                    "y": 100
+                }
+            ],
+            "parentFolder": "dir-7c99f5cf2e"
+        }
+    ],
+    "intents": [
+        {
+            "id": "int-cancel",
+            "name": "cancel",
+            "utterances_with_slots": [
+                "cancel",
+                "abort",
+                "abandon",
+                "i want to cancel",
+                "forget about this",
+                "leave",
+                "stop",
+                "quit",
+                "you know what, nevermind",
+                "forget it"
+            ]
+        },
+        {
+            "id": "int-no",
+            "name": "no",
+            "utterances_with_slots": [
+                "no",
+                "i don't want to",
+                "absolutely not",
+                "nah",
+                "nope",
+                "not really",
+                "not sure",
+                "no thanks"
+            ]
+        },
+        {
+            "id": "int-yes",
+            "name": "yes",
+            "utterances_with_slots": [
+                "yes",
+                "yeah",
+                "absolutely",
+                "i'd like to",
+                "sure ",
+                "hmm probably",
+                "yup",
+                "ok"
+            ]
+        }
+    ],
+    "list_entities": [],
+    "pattern_entities": [],
+    "actions": [],
+    "hooks": [],
+    "qnas": [],
+    "knowledge_base": [],
+    "folders": [
+        {
+            "id": "dir-7c99f5cf2e",
+            "label": "src",
+            "parentFolder": "root"
+        }
+    ],
+    "agents": {
+        "SummaryAgent": {
+            "enabled": true,
+            "config": {
+                "summaryMaxTokens": 100
+            }
+        },
+        "TranslatorAgent": {
+            "config": {
+                "detectLanguage": true
+            }
+        },
+        "KnowledgeAgent": {
+            "enabled": true,
+            "config": {
+                "answerManually": false,
+                "context": "Summary of the conversation:\n\"\"\"\n{{conversation.SummaryAgent.summary}}\n\"\"\"\n\nTranscript:\n\"\"\"\n{{conversation.SummaryAgent.transcript}}\n\"\"\""
+            }
+        },
+        "PersonalityAgent": {
+            "config": {
+                "personality": ""
+            }
+        }
+    },
+    "tables": {
+        "tbl-23a9797a-f198-43fa-8bb5-54e1e109f4b0": {
+            "id": "tbl-23a9797a-f198-43fa-8bb5-54e1e109f4b0",
+            "name": "ThreadsTable",
+            "factor": 1,
+            "frozen": false,
+            "tags": null,
+            "createdAt": "2023-11-15T00:38:48.524Z",
+            "updatedAt": "2024-01-24T18:29:47.210Z",
+            "schema": {
+                "$schema": "http://json-schema.org/draft-07/schema#",
+                "type": "object",
+                "additionalProperties": true,
+                "properties": {
+                    "threadId": {
+                        "type": "string",
+                        "description": "",
+                        "nullable": true,
+                        "x-zui": {
+                            "index": 0,
+                            "id": "col-7fba7c9577",
+                            "searchable": false
+                        }
+                    },
+                    "conversationId": {
+                        "type": "string",
+                        "description": "",
+                        "nullable": true,
+                        "x-zui": {
+                            "index": 1,
+                            "id": "col-62baa79cad",
+                            "searchable": false
+                        }
+                    }
+                }
+            },
+            "parentFolder": "dir-7c99f5cf2e",
+            "prettyId": "ThreadsTable",
+            "selectors": [],
+            "metadata": {
+                "columns": [
+                    {
+                        "index": 0,
+                        "hidden": false
+                    },
+                    {
+                        "index": 1,
+                        "hidden": false
+                    },
+                    {
+                        "index": 2,
+                        "hidden": false
+                    },
+                    {
+                        "index": 3,
+                        "hidden": false
+                    },
+                    {
+                        "index": 4,
+                        "hidden": false
+                    }
+                ]
+            }
+        }
+    },
+    "schemas": []
+}
